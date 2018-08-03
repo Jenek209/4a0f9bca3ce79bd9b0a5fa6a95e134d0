@@ -1,0 +1,8 @@
+django
+dj-database-url
+psycopg2
+pillow
+requests
+celery[redis]
+matplotlib
+

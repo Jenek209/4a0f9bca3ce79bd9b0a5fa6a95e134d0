@@ -1,0 +1,34 @@
+version: '2'
+services:
+
+  web:
+    build: ./graphics_in_the_admin_panel_project
+    command: python ./manage.py runserver 0.0.0.0:8000
+    ports:
+    - 8000:8000
+    volumes:
+    - ./graphics_in_the_admin_panel_project:/data
+    depends_on:
+    - db
+    - celery
+    environment:
+      DATABASE_URL: postgres://postgres@db/postgres
+
+  db:
+    image: postgres:10.4
+
+  celery:
+    build: ./graphics_in_the_admin_panel_project
+    command: celery -A graphics_in_the_admin_panel_application worker --loglevel=info
+    volumes:
+    - ./graphics_in_the_admin_panel_project:/data
+    depends_on:
+    - rabbitmq
+    - redis
+
+  rabbitmq:
+    image: rabbitmq
+
+  redis:
+    image: redis
+
